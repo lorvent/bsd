@@ -1380,25 +1380,25 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script src="//oss.maxcdn.com/jquery.bootstrapvalidator/0.5.1/js/bootstrapValidator.min.js"></script>
         <script>
-            $(document).ready(function() {
-                $('.bv-content, .bv-post').find('h1, h2, h3, h4, h5, h6').each(function() {
-                    if (!$(this).attr('id')) {
-                        return;
-                    }
+        $(document).ready(function() {
+            $('.bv-content, .bv-post').find('h1, h2, h3, h4, h5, h6').each(function() {
+                if (!$(this).attr('id')) {
+                    return;
+                }
 
-                    var $heading = $(this),
-                            $span    =  $heading.find('span'),
-                            $anchor  = $('<a/>')
-                                    .html('#')
-                                    .attr('href', '#' + $heading.attr('id'))
-                                    .attr('title', $heading.text())
-                                    .hide();
-                    ($span.length === 0) ? $anchor.appendTo($heading) : $anchor.insertBefore($span);
-                    $heading.hover(function() {
-                        $(this).find('a').toggle();
-                    });
+                var $heading = $(this),
+                        $span    =  $heading.find('span'),
+                        $anchor  = $('<a/>')
+                                .html('#')
+                                .attr('href', '#' + $heading.attr('id'))
+                                .attr('title', $heading.text())
+                                .hide();
+                ($span.length === 0) ? $anchor.appendTo($heading) : $anchor.insertBefore($span);
+                $heading.hover(function() {
+                    $(this).find('a').toggle();
                 });
             });
-        </script>
+        });
+    </script>
     </body>
 </html>
