@@ -3008,5 +3008,549 @@
 
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script src="//oss.maxcdn.com/jquery.bootstrapvalidator/0.5.1/js/bootstrapValidator.min.js"></script>
+        <script src="//oss.maxcdn.com/momentjs/2.8.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"></script>
+    <script>
+        function getCountryCode(value, validator, $field) {
+            // Return the selected country code
+            return validator.getFieldElements('countrySelectBox').val();
+        };
+
+        $(document).ready(function() {
+            $('#dobPicker')
+                    .datetimepicker({
+                        pickTime: false
+                    })
+                    .on('dp.change dp.show', function(e) {
+                        $('#feedbackIconForm')
+                                .data('bootstrapValidator')
+                                .updateStatus('dob', 'NOT_VALIDATED', null)
+                                .validateField('dob');
+                    });
+
+            $('#containerForm').bootstrapValidator({
+                container: 'tooltip',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                submitHandler: function(validator, form) {
+                    // Do nothing
+                },
+                fields: {
+                    firstName: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The first name is required'
+                            }
+                        }
+                    },
+                    lastName: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The last name is required'
+                            }
+                        }
+                    },
+                    phone: {
+                        validators: {
+                            digits: {
+                                message: 'The phone number can contain digits only'
+                            },
+                            notEmpty: {
+                                message: 'The phone number is required'
+                            }
+                        }
+                    }
+                }
+            });
+
+            $('#feedbackIconForm').bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    fullName: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The full name is required and cannot be empty'
+                            }
+                        }
+                    },
+                    gender: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The gender is required and cannot be empty'
+                            }
+                        }
+                    },
+                    dob: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The date of birth is required and cannot be empty'
+                            },
+                            date: {
+                                format: 'YYYY/DD/MM',
+                                message: 'The value is not a valid date'
+                            }
+                        }
+                    }
+                }
+            });
+
+            $('#groupForm').bootstrapValidator({
+                container: 'tooltip',
+                group: 'td',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                submitHandler: function(validator, form) {
+                    // Do nothing
+                },
+                fields: {
+                    'project[]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'The project name is required'
+                            }
+                        }
+                    },
+                    'role[]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'The role is required'
+                            }
+                        }
+                    },
+                    'url[]': {
+                        validators: {
+                            notEmpty: {
+                                message: 'The URL is required'
+                            },
+                            uri: {
+                                message: 'The URL is invalid'
+                            }
+                        }
+                    }
+                }
+            });
+
+            $('#fieldContainerForm').bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    firstName: {
+                        container: '#firstNameMessage',
+                        validators: {
+                            notEmpty: {
+                                message: 'The first name is required and cannot be empty'
+                            }
+                        }
+                    },
+                    lastName: {
+                        container: '.lastNameMessage',
+                        validators: {
+                            notEmpty: {
+                                message: 'The last name is required and cannot be empty'
+                            }
+                        }
+                    },
+                    username: {
+                        message: 'The username is not valid',
+                        validators: {
+                            notEmpty: {
+                                message: 'The username is required and cannot be empty'
+                            },
+                            stringLength: {
+                                min: 6,
+                                max: 30,
+                                message: 'The username must be more than 6 and less than 30 characters long'
+                            }
+                        }
+                    }
+                }
+            });
+
+            $('#fieldIconsForm').bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                submitHandler: function(validator, form) {
+                    // Do nothing
+                },
+                fields: {
+                    address: {
+                        feedbackIcons: 'false',
+                        validators: {
+                            notEmpty: {
+                                message: 'The address is required and cannot be empty'
+                            }
+                        }
+                    },
+                    city: {
+                        feedbackIcons: false,
+                        validators: {
+                            notEmpty: {
+                                message: 'The city is required and cannot be empty'
+                            }
+                        }
+                    },
+                    phone: {
+                        feedbackIcons: true,
+                        validators: {
+                            notEmpty: {
+                                message: 'The phone number is required and cannot be empty'
+                            },
+                            phone: {
+                                country: 'US',
+                                message: 'The phone number is not valid'
+                            }
+                        }
+                    }
+                }
+            });
+
+            $('#paymentForm').bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    ccNumber: {
+                        selector: '#ccNumber',
+                        validators: {
+                            notEmpty: {
+                                message: 'The credit card number is required'
+                            },
+                            creditCard: {
+                                message: 'The credit card number is not valid'
+                            }
+                        }
+                    },
+                    expMonth: {
+                        selector: '[data-stripe="exp-month"]',
+                        validators: {
+                            notEmpty: {
+                                message: 'The expiration month is required'
+                            },
+                            digits: {
+                                message: 'The expiration month can contain digits only'
+                            },
+                            callback: {
+                                message: 'Expired',
+                                callback: function(value, validator) {
+                                    value = parseInt(value, 10);
+                                    var year         = validator.getFieldElements('expYear').val(),
+                                            currentMonth = new Date().getMonth() + 1,
+                                            currentYear  = new Date().getFullYear();
+                                    if (value < 0 || value > 12) {
+                                        return false;
+                                    }
+                                    if (year == '') {
+                                        return true;
+                                    }
+                                    year = parseInt(year, 10);
+                                    if (year > currentYear || (year == currentYear && value > currentMonth)) {
+                                        validator.updateStatus('expYear', 'VALID');
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    expYear: {
+                        selector: '[data-stripe="exp-year"]',
+                        validators: {
+                            notEmpty: {
+                                message: 'The expiration year is required'
+                            },
+                            digits: {
+                                message: 'The expiration year can contain digits only'
+                            },
+                            callback: {
+                                message: 'Expired',
+                                callback: function(value, validator) {
+                                    value = parseInt(value, 10);
+                                    var month        = validator.getFieldElements('expMonth').val(),
+                                            currentMonth = new Date().getMonth() + 1,
+                                            currentYear  = new Date().getFullYear();
+                                    if (value < currentYear || value > currentYear + 100) {
+                                        return false;
+                                    }
+                                    if (month == '') {
+                                        return false;
+                                    }
+                                    month = parseInt(month, 10);
+                                    if (value > currentYear || (value == currentYear && month > currentMonth)) {
+                                        validator.updateStatus('expMonth', 'VALID');
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    cvvNumber: {
+                        selector: '.cvvNumber',
+                        validators: {
+                            notEmpty: {
+                                message: 'The CVV number is required'
+                            },
+                            cvv: {
+                                message: 'The value is not a valid CVV',
+                                creditCardField: 'ccNumber'
+                            }
+                        }
+                    }
+                }
+            });
+
+            $('#thresholdForm').bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                submitHandler: function(validator, form) {
+                    // Do nothing
+                },
+                threshold: 3,
+                fields: {
+                    fullname: {
+                        threshold: 10,
+                        validators: {
+                            notEmpty: {
+                                message: 'The full name is required'
+                            }
+                        }
+                    },
+                    gender: {
+                        // The threshold option does not effect to the elements which user cannot type, such as radio, checkbox, select one
+                        threshold: 5,
+                        validators: {
+                            notEmpty: {
+                                message: 'The summary is required'
+                            }
+                        }
+                    },
+                    phone: {
+                        threshold: 5,
+                        validators: {
+                            notEmpty: {
+                                message: 'The phone number is required'
+                            },
+                            phone: {
+                                message: 'The phone number is not valid',
+                                country: 'US'
+                            }
+                        }
+                    },
+                    address: {
+                        // The threshold option is not set, it will be taken from the form option (which is 3 in this example)
+                        validators: {
+                            notEmpty: {
+                                message: 'The city is required'
+                            }
+                        }
+                    }
+                }
+            });
+
+            $('#triggerForm').bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    title: {
+                        trigger: 'keyup',
+                        validators: {
+                            notEmpty: {
+                                message: 'The title is required'
+                            }
+                        }
+                    },
+                    summary: {
+                        trigger: 'blur',
+                        validators: {
+                            notEmpty: {
+                                message: 'The summary is required'
+                            }
+                        }
+                    },
+                    description: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The description is required'
+                            }
+                        }
+                    }
+                }
+            });
+
+            $('#validatorEnabledForm').bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                submitHandler: function(validator, form) {
+                    // Do nothing
+                },
+                fields: {
+                    fullName: {
+                        validators: {
+                            notEmpty: {
+                                // enabled is true, by default
+                                message: 'The full name is required and cannot be empty'
+                            },
+                            stringLength: {
+                                enabled: true,
+                                min: 8,
+                                max: 40,
+                                message: 'The full name must be more than 8 and less than 40 characters long'
+                            },
+                            regexp: {
+                                enabled: false,
+                                regexp: /^[a-zA-Z\s]+$/,
+                                message: 'The full name can only consist of alphabetical, number, and space'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Dynamic option concept
+            // #1 usage
+            $('#zipcodeForm').bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    code: {
+                        validators: {
+                            zipCode: {
+                                country: 'US',
+                                message: 'The value is not valid zipcode'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // #2 usage
+            $('#zipcodeElementForm')
+                    .bootstrapValidator({
+                        feedbackIcons: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            code: {
+                                validators: {
+                                    zipCode: {
+                                        country: 'countrySelectBox',
+                                        message: 'The value is not valid zipcode'
+                                    }
+                                }
+                            }
+                        }
+                    })
+                    .on('change', '[name="countrySelectBox"]', function() {
+                        // Revalidate the zipcode after changing the country
+                        $('#zipcodeElementForm').bootstrapValidator('revalidateField', 'code');
+                    });
+
+            // #3 usage
+            $('#zipcodeFunctionNameForm')
+                    .bootstrapValidator({
+                        feedbackIcons: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            code: {
+                                validators: {
+                                    zipCode: {
+                                        country: 'getCountryCode',
+                                        message: 'The value is not valid zipcode'
+                                    }
+                                }
+                            }
+                        }
+                    })
+                    .on('change', '[name="countrySelectBox"]', function() {
+                        $('#zipcodeFunctionNameForm').bootstrapValidator('revalidateField', 'code');
+                    });
+
+            // #4 usage
+            $('#zipcodeCallbackForm')
+                    .bootstrapValidator({
+                        feedbackIcons: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            code: {
+                                validators: {
+                                    zipCode: {
+                                        country: function(value, validator, $field) {
+                                            return validator.getFieldElements('countrySelectBox').val();
+                                        },
+                                        message: 'The value is not valid zipcode'
+                                    }
+                                }
+                            }
+                        }
+                    })
+                    .on('change', '[name="countrySelectBox"]', function() {
+                        $('#getCountryCode').bootstrapValidator('revalidateField', 'code');
+                    });
+
+            // Dynamic message
+            $('#dynamicMessageForm')
+                    .bootstrapValidator({
+                        feedbackIcons: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            code: {
+                                validators: {
+                                    zipCode: {
+                                        country: 'countrySelectBox',
+                                        message: 'The value is not valid %s'
+                                    }
+                                }
+                            }
+                        }
+                    })
+                    .on('change', '[name="countrySelectBox"]', function() {
+                        // Revalidate the zipcode after changing the country
+                        $('#dynamicMessageForm').bootstrapValidator('revalidateField', 'code');
+                    });
+        });
+    </script>
         </body>
 </html>
